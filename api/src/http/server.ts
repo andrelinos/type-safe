@@ -1,3 +1,7 @@
+import { createUser } from '@/http/routes/create-user'
+import { getUser } from '@/http/routes/get-user'
+import { getUsers } from '@/http/routes/get-users'
+
 import fastifyCors from '@fastify/cors'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
@@ -10,9 +14,8 @@ import {
 } from 'fastify-type-provider-zod'
 import { writeFile } from 'node:fs'
 import { resolve } from 'node:path'
-import { createUser } from './routes/create-user'
-import { getUser } from './routes/get-user'
-import { getUsers } from './routes/get-users'
+import { deleteUser } from './routes/delete-user'
+import { editUser } from './routes/edit-user'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -84,6 +87,8 @@ export const users: UserProps[] = []
 app.register(createUser)
 app.register(getUsers)
 app.register(getUser)
+app.register(editUser)
+app.register(deleteUser)
 
 const port = 3333
 

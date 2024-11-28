@@ -21,8 +21,8 @@ export const getUsers: FastifyPluginAsyncZod = async app => {
         },
       },
     },
-    async () => {
-      return users
+    async (_, replay) => {
+      return replay.code(200).send(users)
     }
   )
 }
