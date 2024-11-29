@@ -56,11 +56,15 @@ O backend foi desenvolvido com Node.js utilizando o framework **Fastify** e outr
 1. **Backend** gera a documentação OpenAPI utilizando **Fastify Swagger**.
 2. **Orval** consome essa documentação e gera automaticamente:
    - Hooks do React Query para chamadas à API.
-   - Tipos TypeScript para validação e tipagem.
+   - Tipos TypeScript para validação e tipagem.3
+
+Link doc Orval: https://orval.dev/overview
 
 Para executar o Orval:
 ```bash
-npx orval --config orval.config.json
+npm run generate:api
+
+# comando já dentro do package.json
 ```
 
 ---
