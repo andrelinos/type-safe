@@ -9,6 +9,7 @@ export const deleteUser: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ['users'],
         description: 'Get an user',
+        operationId: 'deleteUser',
         params: z.object({
           id: z.string(),
         }),

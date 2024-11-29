@@ -11,6 +11,7 @@
   "paths": {
     "/users": {
       "post": {
+        "operationId": "createUser",
         "tags": [
           "users"
         ],
@@ -48,10 +49,29 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "enum": [
-                    "null"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "age": {
+                      "type": "number"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "age",
+                    "email"
                   ],
-                  "nullable": true
+                  "additionalProperties": false
                 }
               }
             }
@@ -59,6 +79,7 @@
         }
       },
       "get": {
+        "operationId": "getUsers",
         "tags": [
           "users"
         ],
@@ -104,6 +125,7 @@
     },
     "/users/{id}": {
       "get": {
+        "operationId": "getUser",
         "tags": [
           "users"
         ],
@@ -173,6 +195,7 @@
         }
       },
       "put": {
+        "operationId": "editUser",
         "tags": [
           "users"
         ],
@@ -250,6 +273,7 @@
         }
       },
       "delete": {
+        "operationId": "deleteUser",
         "tags": [
           "users"
         ],

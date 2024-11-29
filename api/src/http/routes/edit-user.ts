@@ -9,6 +9,7 @@ export const editUser: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ['users'],
         description: 'Get an user',
+        operationId: 'editUser',
         params: z.object({
           id: z.string(),
         }),
@@ -38,7 +39,7 @@ export const editUser: FastifyPluginAsyncZod = async app => {
       if (age !== undefined) user.age = age
       if (email !== undefined) user.email = email
 
-      return replay.code(200).send()
+      return replay.code(200).send({ message: 'Edit user success' })
     }
   )
 }

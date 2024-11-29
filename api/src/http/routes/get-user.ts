@@ -9,6 +9,7 @@ export const getUser: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ['users'],
         description: 'Get an user',
+        operationId: 'getUser',
         params: z.object({
           id: z.string(),
         }),
