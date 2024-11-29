@@ -9,10 +9,22 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import type { GetUsers200Item } from '@/http/generated/api.schemas'
 import {
+  editUser,
   getGetUsersQueryKey,
   type getUsersResponse,
   useCreateUser,
 } from '@/http/generated/users/users'
+import { useEffect } from 'react'
+
+interface CreateUserProps {
+  userSelected?: GetUsers200Item
+}
+const handleScrollToBottom = () => {
+  const container = document.getElementById('scrollContainer')
+  if (container) {
+    container.scrollTop = container.scrollHeight
+  }
+}
 
 const createUserSchema = z.object({
   age: z.coerce.number().min(1),
@@ -22,7 +34,7 @@ const createUserSchema = z.object({
 
 type CreateUserSchema = z.infer<typeof createUserSchema>
 
-export function CreateUser() {
+export function CreateUser({ userSelected }: CreateUserProps) {
   const queryClient = useQueryClient()
 
   const {
@@ -37,35 +49,80 @@ export function CreateUser() {
   const { mutateAsync: createUser, isPending } = useCreateUser()
 
   async function handleCreateUser(data: CreateUserSchema) {
-    try {
-      const newUser = await createUser({ data })
+    if (userSelected) {
+      const response = await editUser(userSelected.id, data)
 
-      const newUserItem = newUser.data as GetUsers200Item
+      if (response.status === 200) {
+        queryClient.setQueryData<getUsersResponse>(
+          getGetUsersQueryKey(),
+          state => {
+            const currentState: getUsersResponse =
+              state ?? ({} as getUsersResponse)
 
-      queryClient.setQueryData<getUsersResponse>(
-        getGetUsersQueryKey(),
-        state => {
-          const currentState: getUsersResponse =
-            state ?? ({} as getUsersResponse)
+            const dataFiltered =
+              currentState.data?.filter(u => u.id !== userSelected.id) || []
 
-          const newData = [
-            ...currentState.data,
-            newUserItem,
-          ] as GetUsers200Item[]
-          const newState = { ...currentState, data: newData }
+            const newData = [
+              ...dataFiltered,
+              { ...userSelected, ...data },
+            ] as GetUsers200Item[]
 
-          return newState
-        }
-      )
+            newData.sort((a, b) => a.id.localeCompare(b.id))
 
-      toast.success('Novo usuário cadastrado com sucesso!')
+            const newState = { ...currentState, data: newData }
 
-      reset()
-    } catch {
-      toast.error('Ocorreu um erro ao tentar cadastrar novo usuário!')
-      return
+            return newState
+          }
+        )
+
+        toast.success('Novo usuário cadastrado com sucesso!')
+      } else {
+        toast.error('Ocorreu um erro ao tentar cadastrar novo usuário!')
+        return
+      }
+
+      reset({ age: 0, email: '', name: '' })
+    } else {
+      try {
+        const newUser = await createUser({ data })
+
+        const newUserItem = newUser.data as GetUsers200Item
+
+        queryClient.setQueryData<getUsersResponse>(
+          getGetUsersQueryKey(),
+          state => {
+            const currentState: getUsersResponse =
+              state ?? ({} as getUsersResponse)
+
+            const newData = [
+              ...currentState.data,
+              newUserItem,
+            ] as GetUsers200Item[]
+            const newState = { ...currentState, data: newData }
+
+            return newState
+          }
+        )
+
+        toast.success('Novo usuário cadastrado com sucesso!')
+
+        reset()
+      } catch {
+        toast.error('Ocorreu um erro ao tentar cadastrar novo usuário!')
+        return
+      }
     }
+
+    handleScrollToBottom()
   }
+
+  useEffect(() => {
+    reset({
+      age: userSelected?.age ?? undefined,
+      email: userSelected?.email ?? '',
+      name: userSelected?.name ?? '',
+    })
+  }, [userSelected, reset])
 
   return (
     <div className="flex flex-col fixed w-full rounded-tl-lg max-w-md bottom-0 right-0 bg-zinc-200 dark:bg-zinc-900">

@@ -14,7 +14,7 @@ export const deleteUser: FastifyPluginAsyncZod = async app => {
           id: z.string(),
         }),
         response: {
-          204: z.null(),
+          200: z.object({}),
           404: z.object({
             message: z.string(),
           }),
@@ -32,7 +32,7 @@ export const deleteUser: FastifyPluginAsyncZod = async app => {
 
       users.splice(userIndex, 1)
 
-      return replay.code(200).send()
+      return replay.code(200).send({})
     }
   )
 }

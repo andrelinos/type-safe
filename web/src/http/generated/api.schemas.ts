@@ -9,16 +9,7 @@ export type DeleteUser404 = {
   message: string;
 };
 
-/**
- * @nullable
- */
-export type DeleteUser204 = typeof DeleteUser204[keyof typeof DeleteUser204] | null;
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteUser204 = {
-  null: 'null',
-} as const;
+export type DeleteUser200 = { [key: string]: unknown };
 
 export type EditUser404 = {
   message: string;

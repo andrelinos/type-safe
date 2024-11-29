@@ -238,15 +238,34 @@
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "Default Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "enum": [
-                    "null"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "age": {
+                      "type": "number"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "age",
+                    "email"
                   ],
-                  "nullable": true
+                  "additionalProperties": false
                 }
               }
             }
@@ -289,15 +308,14 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Default Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "enum": [
-                    "null"
-                  ],
-                  "nullable": true
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
                 }
               }
             }

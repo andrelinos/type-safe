@@ -19,7 +19,12 @@ export const editUser: FastifyPluginAsyncZod = async app => {
           email: z.string(),
         }),
         response: {
-          201: z.null(),
+          200: z.object({
+            id: z.string(),
+            name: z.string(),
+            age: z.number(),
+            email: z.string().email(),
+          }),
           404: z.object({
             message: z.string(),
           }),
@@ -39,7 +44,7 @@ export const editUser: FastifyPluginAsyncZod = async app => {
       if (age !== undefined) user.age = age
       if (email !== undefined) user.email = email
 
-      return replay.code(200).send({ message: 'Edit user success' })
+      return replay.code(200).send({ id, name, age, email })
     }
   )
 }

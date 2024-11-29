@@ -21,14 +21,16 @@ export function ErrorPage() {
       <p className="text-accent-foreground">
         Um erro aconteceu na aplicação, abaixo você encontra mais detalhes:
       </p>
-      <pre>{error.message || JSON?.stringify(error, null, 2)}</pre>
+      <p className="max-w-7xl mx-auto p-4 pre">
+        {error.message || JSON?.stringify(error, null, 2)}
+      </p>
       <span className="text-xs text-muted-foreground">
         * não recomendado mostrar este erro em produção.
       </span>
       <p className="text-accent-foreground">
         Voltar para o{' '}
         <Link to="/" className="text-sky-500 dark:text-sky-400">
-          Dashboard
+          Home
         </Link>
       </p>
     </div>

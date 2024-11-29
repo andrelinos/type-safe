@@ -25,7 +25,7 @@ import type {
 import type {
   CreateUser201,
   CreateUserBody,
-  DeleteUser204,
+  DeleteUser200,
   DeleteUser404,
   EditUser201,
   EditUser404,
@@ -386,7 +386,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
  * Get an user
  */
 export type deleteUserResponse = {
-  data: DeleteUser204;
+  data: DeleteUser200;
   status: number;
   headers: Headers;
 }

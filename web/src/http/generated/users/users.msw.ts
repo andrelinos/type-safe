@@ -15,7 +15,7 @@ import {
 } from 'msw'
 import type {
   CreateUser201,
-  DeleteUser204,
+  DeleteUser200,
   EditUser201,
   GetUser200,
   GetUsers200Item
@@ -29,7 +29,7 @@ export const getGetUserResponseMock = (overrideResponse: Partial< GetUser200 > =
 
 export const getEditUserResponseMock = (): EditUser201 => (faker.helpers.arrayElement([faker.helpers.arrayElement(['null'] as const), null]))
 
-export const getDeleteUserResponseMock = (): DeleteUser204 => (faker.helpers.arrayElement([faker.helpers.arrayElement(['null'] as const), null]))
+export const getDeleteUserResponseMock = (overrideResponse: Partial< DeleteUser200 > = {}): DeleteUser200 => ({...overrideResponse})
 
 
 export const getCreateUserMockHandler = (overrideResponse?: CreateUser201 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<CreateUser201> | CreateUser201)) => {
@@ -80,13 +80,13 @@ export const getEditUserMockHandler = (overrideResponse?: EditUser201 | ((info: 
   })
 }
 
-export const getDeleteUserMockHandler = (overrideResponse?: DeleteUser204 | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<DeleteUser204> | DeleteUser204)) => {
+export const getDeleteUserMockHandler = (overrideResponse?: DeleteUser200 | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<DeleteUser200> | DeleteUser200)) => {
   return http.delete('*/users/:id', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
             : getDeleteUserResponseMock()),
-      { status: 204,
+      { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
